@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>  
+</div>
+<div class="row">
+    <div class="col-4 offset-4">
+        <div class="form-group">
+            <label>Select Country</label>
+            <select class="form-control Country">
+                <option>Select</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Select State</label>
+            <select class="form-control State">
+                <option>Select</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Select City</label>
+            <select class="form-control City">
+                <option>Select</option>
+            </select>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        LoadCountry()
+        $(".Country").change(function () {
+            var id = $(this).val();
+            $(".State").empty();
+            $(".State").append("<option>select</option>")
+            $.get('@Url.Action("GetState","Home")', { "id": id }, function (Result) {
+                console.log(Result)
+            $.each(Result, function (i, data) {
+                $(".State").append("<option value="+data.id+">"+data.name+"</option >")
+            })
+        })
+        })
+
+         $(".State").change(function () {
+            var id = $(this).val();
+            $(".City").empty();
+            $(".City").append("<option>select</option>")
+            $.get('@Url.Action("GetCity","Home")', { "id": id }, function (Result) {
+                console.log(Result)
+            $.each(Result, function (i, data) {
+                $(".City").append("<option value="+data.id+">"+data.name+"</option >")
+            })
+        })
+        })
+
+
+
+
+
+
+
+    })
+
+    function LoadCountry() {
+        $.get('@Url.Action("GetCountry","Home")', function (Result) {
+            $.each(Result, function (i, data) {
+                $(".Country").append("<option value="+data.id+">"+data.name+"</option >")
+            })
+        })
+    }
+</script>
